@@ -10,11 +10,11 @@ export default function Room (){
 
     function createNewRoom(){
         setCreateRoomModal(true)
+        setRoomname()
     }
     
     function onSubmit(e){
         e.preventDefault()
-
     }
 
     return(
@@ -34,9 +34,9 @@ export default function Room (){
                     <br/>
                     <button type='submit'>Enter room</button>
                 </form>
-                <button className='createNewRoom' onClick={createNewRoom(createRoomModal, setCreateRoomModal, )}>Create new room</button>
+                <button className='createNewRoom' onClick={createNewRoom}>Create new room</button>
             </div>
-            {createRoomModal && <NewRoomModal room={roomname} setCreateRoomModal={setCreateRoomModal} /> }
+            {createRoomModal && <NewRoomModal room={roomname} setCreateRoomModal={setCreateRoomModal} createRoomModal={createRoomModal} createNewRoom={createNewRoom}/> }
         </div>
     )
 }
