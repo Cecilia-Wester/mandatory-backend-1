@@ -9,6 +9,8 @@ import Chat from './components/Chat/Chat';
 import Header from './components/Header/Header'
 
 export default function App() {
+    const socket = io('localhost:8090');
+    socket.on('connect', () => console.log('hejhej'));
     return (
         <div className="App">
             <HelmetProvider>

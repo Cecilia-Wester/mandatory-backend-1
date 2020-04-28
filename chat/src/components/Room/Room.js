@@ -1,23 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {Helmet} from 'react-helmet-async';
 import {Router, Link} from 'react-router-dom';
 import './Room.css';
 import NewRoomModal from './NewRoomModal';
+import io from 'socket.io-client';
 
 export default function Room (){
     const [createRoomModal, setCreateRoomModal] = useState(false);
     const [roomname, setRoomname] = useState('');
 
+    useEffect(() => {
+        socket.on('connect')
+    }, [])
+
     function createNewRoom(){
-        setCreateRoomModal(true)
-        setRoomname()
+        setCreateRoomModal(true);
+        setRoomname('');
     }
     
     function onSubmit(e){
-        e.preventDefault()
+        e.preventDefault();
     }
 
+
     return(
+
         <div className='roomContainer' >
             <Helmet>
                 <title>Room</title>

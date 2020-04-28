@@ -1,9 +1,27 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import {Helmet} from 'react-helmet-async';
-import {Router, Link} from 'react-router-dom';
-import './Chat.css'
+import {Router, Link, Redirect} from 'react-router-dom';
+import './Chat.css';
+import axios from 'axios';
+import queryString from 'query-string';
+import io from 'socket.io-client';
 
-export default function Chat (){
+export default function Chat ({ location }){
+    
+    const [name, setName] = useState('');
+    const [room, setRoom] = useState('');
+    const socket = io('http://localhost:8090');
+
+    useEffect(() => {
+        const {room, name} = queryString.parse(location.search);
+        
+        setName(name)
+        setRoom(room)
+        
+        socket.emit('join', { name, room })
+        
+    }, [8090, location.search]);
+
     return(
         <div className='chatContainer'>
             <Helmet>
@@ -19,6 +37,7 @@ export default function Chat (){
                 </label>
                 <button type='submit'>Send</button>
             </form>
+            <button onClick={() => <Redirect to= '/' />}>Leave chat</button>
         </div>
     )
 }
