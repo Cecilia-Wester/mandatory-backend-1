@@ -4,13 +4,13 @@ import {Router, Link, Redirect} from 'react-router-dom';
 import './Chat.css';
 import axios from 'axios';
 import queryString from 'query-string';
-import io from 'socket.io-client';
+import socket from '../../utility/socket';
 
 export default function Chat ({ location }){
     
     const [name, setName] = useState('');
     const [room, setRoom] = useState('');
-    const socket = io('http://localhost:8090');
+    
 
     useEffect(() => {
         const {room, name} = queryString.parse(location.search);
@@ -18,8 +18,8 @@ export default function Chat ({ location }){
         setName(name)
         setRoom(room)
         
-        socket.emit('join', { name, room })
-        
+        socket.emit('connect', ('hejhej'));
+
     }, [8090, location.search]);
 
     return(

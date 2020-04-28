@@ -3,14 +3,13 @@ import {Helmet} from 'react-helmet-async';
 import {Router, Link} from 'react-router-dom';
 import './Room.css';
 import NewRoomModal from './NewRoomModal';
-import io from 'socket.io-client';
+import socket from '../../utility/socket';
 
 export default function Room (){
     const [createRoomModal, setCreateRoomModal] = useState(false);
     const [roomname, setRoomname] = useState('');
 
     useEffect(() => {
-        socket.on('connect')
     }, [])
 
     function createNewRoom(){
@@ -24,7 +23,7 @@ export default function Room (){
 
 
     return(
-
+        
         <div className='roomContainer' >
             <Helmet>
                 <title>Room</title>
