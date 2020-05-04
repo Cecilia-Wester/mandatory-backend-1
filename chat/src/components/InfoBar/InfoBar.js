@@ -1,6 +1,6 @@
 import React from 'react';
 import './InfoBar.css';
-import {Redirect} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 export default function InfoBar ({room}){
     return(
@@ -9,7 +9,9 @@ export default function InfoBar ({room}){
                 <p>{room}</p>
             </div>
             <div className='rightInnerContainer' >
-                <button onClick={() => <Redirect to= '/' />}>Leave chat</button>
+                <Link to= '/' >
+                    <button className='rightInnerContainer__button'>Leave chat</button>
+                </Link>
             </div>
         </div>
     );

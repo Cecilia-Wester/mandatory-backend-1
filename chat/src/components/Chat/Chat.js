@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {Helmet} from 'react-helmet-async';
-import {Router, Link, Redirect} from 'react-router-dom';
 import queryString from 'query-string';
 import socket from '../../utility/socket';
 import Header from '../Header/Header';
@@ -15,14 +14,15 @@ export default function Chat ({ location }){
     let [message, setMessage] = useState('');
     let [messages, setMessages] = useState([]);
 
-
     useEffect(() => {
         const {room, name} = queryString.parse(location.search);
         setName(name);
         setRoom(room);
         
-        socket.emit('join', { room, name }, () => {
-            
+        socket.emit('join', { room, name }, (error) => {
+            if(error) {
+                alert(error);
+            }
         });
 
         return() => {
@@ -45,7 +45,7 @@ export default function Chat ({ location }){
         });
     }, [messages]);
 
-    console.log(message,messages);
+    console.log(message,  messages);
     
     return(
         <div className='chatOuterContainer'>
@@ -59,8 +59,6 @@ export default function Chat ({ location }){
                     <Messages messages={messages} name={name} />
                     <Input onSubmitMessage={onSubmitMessage} message= {message} setMessage={setMessage} />
                 </div>
-            
-            
         </div>
     )
 }

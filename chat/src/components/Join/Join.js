@@ -11,24 +11,23 @@ export default function Join (){
     const [name, setName] = useState('');
 
     function createNewRoom(){
-        // setCreateRoomModal(true);
-        // setRoom('');
+        setCreateRoomModal(true);
+        setRoom('');
     }    
 
     return(
-
         <div className='joinOuterContainer' >
             <Helmet>
                 <title>Room</title>
             </Helmet>
             <div className='joinInnerContainer'>
                 <form>
-                    <label htmlFor='username' className='inputfieldlabel'> Username: 
-                        <input type='text' id='username'  className='joinInput' placeholder='Enter username' onChange={(e) => setName(e.target.value)}></input>
+                    <label htmlFor='joinusername' className='inputfieldlabel'> Username: 
+                        <input type='text' id='joinusername'  className='joinInput' placeholder='Enter username' onChange={(e) => setName(e.target.value)}></input>
                     </label>
                     <br/>
-                    <label htmlFor='room' className='inputfieldlabel'> Chatroom:
-                        <input type='text' id='room'  className='joinInput' placeholder='Enter name on room to enter' onChange={(e) => setRoom(e.target.value)}/>
+                    <label htmlFor='joinRoom' className='inputfieldlabel'> Chatroom:
+                        <input id='joinRoom' type='radio' onChange={(e) => setRoom(e.target.value)}/>
                     </label>
                     <br/>
                     <Link onClick={e => (!name || !room) ? e.preventDefault() : null} to={`/chat?name=${name}&room=${room}`}>
@@ -37,7 +36,7 @@ export default function Join (){
                 </form>
                 <button className='createNewRoom' onClick={createNewRoom}>Create new room</button>
             </div>
-            {createRoomModal && <NewRoomModal room={room} setCreateRoomModal={setCreateRoomModal} createRoomModal={createRoomModal} createNewRoom={createNewRoom}/> }
+            {createRoomModal && <NewRoomModal room={room} setRoom={setRoom} name={name} setName={setName} setCreateRoomModal={setCreateRoomModal} /> }
         </div>
     )
 }
