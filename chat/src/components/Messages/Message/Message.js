@@ -1,5 +1,5 @@
 import React from 'react';
-
+import ReactEmoji from 'react-emoji';
 import './Message.css';
 
 export default function Message ({ message: {user, text}, name }) {
@@ -8,14 +8,14 @@ export default function Message ({ message: {user, text}, name }) {
     if(user === trimmedName){
         isSentByCurrentUser = true;
     }
-
+    
     return(
         isSentByCurrentUser
             ?   (
                 <div className='messageContainer justifyEnd'>
                     <p className='sentText pr-10'>{trimmedName}</p>
                     <div className='messageBox backgrundDark'>
-                        <p className='messageText textLight'>{text}</p>
+                        <p className='messageText textLight'>{ReactEmoji.emojify(text)}</p>
                     </div>
                 </div>
                 )
@@ -23,7 +23,7 @@ export default function Message ({ message: {user, text}, name }) {
                 (
                 <div className='messageContainer justifyStart'>
                     <div className='messageBox backgroundLight'>
-                        <p className='messageText textDark'>{text}</p>
+                        <p className='messageText textDark'>{ReactEmoji.emojify(text)}</p>
                     </div>
                     <p className='sentText pl-10'>{user}</p>
                 </div>

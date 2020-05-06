@@ -14,8 +14,7 @@ export default function Header(){
     
     return(
         <div className='headerContainer'>
-            <h1>`Welcome to this cool chat!`</h1>
-            <p >`You are in room`</p>
+            <h1>Welcome to this cool chat!</h1>
         </div>
     );
 }

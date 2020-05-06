@@ -2,11 +2,11 @@
     display: flex;
     flex-direction: column;
     align-items:center;
-    justify-content: center;
     height: 100vh;
     background: url('../../picture/photo-1588097237448-45f7aadebae1.jpg');
     background-repeat: no-repeat;
     background-position-x: center;
+    background-position-y: 100px;
 }
 
 .chatInnerContainer {
@@ -15,8 +15,9 @@
     justify-content: space-between;
     background-color: lightgrey;
     border-radius: 8px;
-    height: 60%;
+    height: 100vh;
     width: 35%;
+    overflow-y: scroll;
 }
 
 .chatMessages{

@@ -13,6 +13,7 @@ export default function Chat ({ location }){
     const [room, setRoom] = useState('');
     let [message, setMessage] = useState('');
     let [messages, setMessages] = useState([]);
+    //let [oldMessages, setOldMessages] = useState([])
 
     useEffect(() => {
         const { room, name } = queryString.parse(location.search);
@@ -20,11 +21,15 @@ export default function Chat ({ location }){
         setRoom(room)
 
         socket.on('oldMessages', (res) => {
-            res.map((oldMessage, i) => {
-                return(console.log(oldMessage))
-            });
+            let oldMessages
+            // console.log(res);
+            // res.res.map((oldMessage, i) => {
+            //     setMessages([...messages, oldMessage.messageSent]);
+                
+           // });
+            setMessages([...messages, res.res.map(oldMessage => oldMessage.messageSent)])
         })
-    });
+    }, []);
 
     useEffect(() => {
         const {room, name} = queryString.parse(location.search);
@@ -33,18 +38,6 @@ export default function Chat ({ location }){
         
         socket.emit('join', { room, name }, () => {
         });
-
-        // socket.on('oldMessages', ( res ) => {
-        //     if(res.length) {
-        //         for(let i=0; i<res.length;i++){
-        //             console.log(i, res)
-        //         }
-        //     }
-        //     console.log(res)
-        //     // res.map((message, i) => {
-        //     //     return(console.log (message, i))
-        //     //});
-        // })
 
         return() => {
             socket.emit('disconnect');
@@ -66,7 +59,7 @@ export default function Chat ({ location }){
         });
     }, [messages]);
 
-    console.log(message,messages);
+    console.log(message, messages);
     
     return(
         <div className='chatOuterContainer'>
