@@ -19,6 +19,7 @@ useEffect(() => {
 }, [])
 
     function createNewRoom(){
+        socket.emit()
         setCreateRoomModal(true);
         setRoom('');
     }    

@@ -1,13 +1,10 @@
 const mongo = require('mongodb');
 const MongoClient = mongo.MongoClient;
 const ObjectId = mongo.ObjectId;
-
 // Connection URL
 const url = 'mongodb://localhost:27017';
-
 // Database Name
 const dbName = process.env.DB_NAME || 'chat';
-
 // Create a new MongoClient
 const client = new MongoClient(url, { useUnifiedTopology: true });
 client.connect();

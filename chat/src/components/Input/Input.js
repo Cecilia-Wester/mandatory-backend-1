@@ -4,9 +4,10 @@ import './Input.css'
 export default function Input ({ onSubmitMessage, message, setMessage }){
     return(
         <div className='input'>
-        <form onSubmit={onSubmitMessage}>
+        <form onSubmit={onSubmitMessage} className='form'>
                 <label htmlFor='chatInput'>
                     <input 
+                        className='chatInput'
                         value={message} 
                         type='text' 
                         id='chatInput' 
