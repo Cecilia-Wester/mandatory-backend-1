@@ -11,8 +11,8 @@ import Messages from '../Messages/Messages';
 export default function Chat ({ location }){
     const [name, setName] = useState('');
     const [room, setRoom] = useState('');
-    let [message, setMessage] = useState('');
-    let [messages, setMessages] = useState([]);
+    const [message, setMessage] = useState('');
+    const [messages, setMessages] = useState([]);
     //let [oldMessages, setOldMessages] = useState([])
 
     useEffect(() => {
@@ -21,15 +21,27 @@ export default function Chat ({ location }){
         setRoom(room)
 
         socket.on('oldMessages', (res) => {
-            let oldMessages
+            // let oldMessages
             // console.log(res);
             // res.res.map((oldMessage, i) => {
             //     setMessages([...messages, oldMessage.messageSent]);
                 
            // });
-            setMessages([...messages, res.res.map(oldMessage => oldMessage.messageSent)])
+            //setMessages([...messages, res.res.map(oldMessage => oldMessage.messageSent)])
+            // console.log('oldmessages received')
+            // console.log(res)
+            
+            res.res.map((m) =>{
+                setMessages([...messages, {user: m.messageSent.name, text: m.messageSent.text}])
+            });
+            
+           //blurb = res.res.map(getOldMessage)
         })
-    }, []);
+    }, [messages]);
+
+    // function getOldMessage(msg){
+
+    // }
 
     useEffect(() => {
         const {room, name} = queryString.parse(location.search);
@@ -55,11 +67,16 @@ export default function Chat ({ location }){
 
     useEffect(() => {
         socket.on('message', (message) => {
+            console.log('got a message')
+            console.log(message);
+            console.log(messages);
             setMessages([...messages, message]);
-        });
+            console.log(message);
+            console.log(messages);       
+         });
     }, [messages]);
 
-    console.log(message, messages);
+    //console.log(message, messages);
     
     return(
         <div className='chatOuterContainer'>
