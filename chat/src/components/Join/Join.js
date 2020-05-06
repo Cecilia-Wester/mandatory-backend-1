@@ -11,9 +11,12 @@ export default function Join (){
     const [room, setRoom] = useState('');
     const [name, setName] = useState('');
 
-    // useEffect() => {
-    //     axios.get(socket)
-    // }
+useEffect(() => {
+    axios.get('http://localhost:8090')
+    .then((err, res) => {
+        console.log(err, res)
+    });
+}, [])
 
     function createNewRoom(){
         setCreateRoomModal(true);
@@ -24,7 +27,7 @@ export default function Join (){
 
         <div className='joinOuterContainer' >
             <Helmet>
-                <title>Room</title>
+                <title>Join</title>
             </Helmet>
             <div className='joinInnerContainer'>
                 <form>

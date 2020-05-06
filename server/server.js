@@ -11,24 +11,6 @@ const PORT = process.env.PORT || 8090;
 
 app.use(express.json);
 
-// app.post('/rooms',(req, res) => {
-//   const db = getDB;
-//   let data = req.body;
-//   console.log(data)
-//   if(validate(data) === false){
-//     db.collection('chatting')
-//     .insertOne(data)
-//     .then(result => {
-//       data._id =result.insertedId;
-//       res.status(201).send(data);
-//     })
-//     .catch(e => {
-//       console.error(e);
-//       res.status(500).end();
-//     });
-//   }
-// });
-
 io.on('connection', (socket) => {
   socket.on('join', ({ name, room }, callback) => {
     const { error, user } = addUser({ id: socket.id, name, room});
@@ -39,11 +21,6 @@ io.on('connection', (socket) => {
         console.error(err)
       } 
       console.log(res)
-      //res.map((messagesSent) => {
-      //   console.log(messagesSent);
-
-      // });
-      // console.log(name);
       socket.emit('oldMessages', ({ res }))
     });
     

@@ -15,6 +15,18 @@ export default function Chat ({ location }){
     let [messages, setMessages] = useState([]);
 
     useEffect(() => {
+        const { room, name } = queryString.parse(location.search);
+        setName(name)
+        setRoom(room)
+
+        socket.on('oldMessages', (res) => {
+            res.map((oldMessage, i) => {
+                return(console.log(oldMessage))
+            });
+        })
+    });
+
+    useEffect(() => {
         const {room, name} = queryString.parse(location.search);
         setName(name);
         setRoom(room);
@@ -22,12 +34,17 @@ export default function Chat ({ location }){
         socket.emit('join', { room, name }, () => {
         });
 
-        socket.on('oldMessages', ( res ) => {
-            console.log(res)
-            // res.map((message, i) => {
-            //     return(console.log (message, i))
-            //});
-        })
+        // socket.on('oldMessages', ( res ) => {
+        //     if(res.length) {
+        //         for(let i=0; i<res.length;i++){
+        //             console.log(i, res)
+        //         }
+        //     }
+        //     console.log(res)
+        //     // res.map((message, i) => {
+        //     //     return(console.log (message, i))
+        //     //});
+        // })
 
         return() => {
             socket.emit('disconnect');
