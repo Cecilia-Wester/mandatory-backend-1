@@ -1,15 +1,59 @@
 const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
-const io = require('socket.io')(server);
+const io = require('socket.io')(server, {origins: '*:*' });
 const {getClient, getDB, createObjectId} = require('./db');
 
-const router = require('./router');
 const {addUser, removeUser, getUser, getUsersInRoom} = require('./users', );
 
 const PORT = process.env.PORT || 8090;
 
 app.use(express.json);
+
+app.post('/chat', (req,res) => {
+  const db = getDB();
+  let data = req.body;
+  console.log(data)
+  db.collection('Rooms')
+    .insertOne(data)
+    .then(result => {
+      data._id = result.insertedId
+      res.status(201).send(data)
+    })
+    .catch(e => {
+      console.log(e);
+      res.status(500).end()
+    })
+})
+
+app.get('/chat', (req,res) => {
+  const db = getDB();
+  db.collection('Rooms')
+    .find({})
+    .toArray()
+    .then(data => {
+      res.send(data)
+    })
+    .catch(e =>{
+      console.log(e)
+      res.status(500).end()
+    })
+})
+
+app.get('/chat/:id', (req,res) =>{
+  let roomId = req.params.id;
+
+  const db=getDB();
+  db.collection('Rooms')
+    .findOne({_id: createObjectId(roomId)})
+    .then(room => {
+      res.send(room);
+    })
+    .catch(e => {
+      console.log(e)
+      res.status(500).end();
+    })
+})
 
 io.on('connection', (socket) => {
   socket.on('join', ({ name, room }, callback) => {
@@ -23,7 +67,6 @@ io.on('connection', (socket) => {
       console.log(res)
       socket.emit('oldMessages', ({ res }))
     });
-    
     
     socket.emit('message', {user: 'admin', text: `${user.name} welcome to the room ${user.room}`});
     socket.broadcast.to(user.room).emit('message', {user: 'admin', text: `${user.name} has joined!`})
@@ -61,7 +104,7 @@ io.on('connection', (socket) => {
   });
 });
 
-app.use(router);
+
 
 server.listen(PORT, () => {
   console.log(`listening on ${PORT}`);

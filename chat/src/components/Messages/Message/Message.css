@@ -1,8 +1,8 @@
 .messageBox {
-    background: #F3F3F3;
+    background: rgb(56, 53, 53);
     border-radius: 20px;
     padding: 5px 20px;
-    color: white;
+    color: rgb(189, 171, 171);
     display: inline-block;
     max-width: 80%;
   }

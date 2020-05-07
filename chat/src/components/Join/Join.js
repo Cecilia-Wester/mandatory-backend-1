@@ -8,15 +8,19 @@ import axios from 'axios';
 
 export default function Join (){
     const [createRoomModal, setCreateRoomModal] = useState(false);
-    const [room, setRoom] = useState('');
+const [room, setRoom] = useState('');
     const [name, setName] = useState('');
+    const [rooms, setRooms] = useState([{name: 'test1'},{name: 'test2'}, {name: 'test3'}])
 
-useEffect(() => {
-    axios.get('http://localhost:8090')
-    .then((err, res) => {
-        console.log(err, res)
-    });
-}, [])
+    useEffect(() => {
+        axios.get('http://localhost:8090/rooms')
+        .then(( res ) => {
+            setRooms([...rooms, res.room]);
+        })
+        .catch((err) =>{
+            console.log(err)
+        })
+    }, [])
 
     function createNewRoom(){
         setCreateRoomModal(true);
@@ -35,9 +39,18 @@ useEffect(() => {
                         <input type='text' id='username'  className='joinInput' placeholder='Enter username' onChange={(e) => setName(e.target.value)}></input>
                     </label>
                     <br/>
-                    <label htmlFor='room' className='inputfieldlabel'> Chatroom:
-                        <input type='radio' id='room'  className='joinInput' onChange={(e) => setRoom(e.target.value)}/>
-                    </label>
+                    <select name='room' id='room'>
+                        {/*rooms.map((room) => {
+                            <option 
+                                key={room.id}
+
+                                > 
+                                {room}
+                            </option>
+                        })*/}
+                        
+                    </select>
+                    
                     <br/>
                     <Link onSubmit={e => (!name || !room) ? e.preventDefault() : null} to={`/chat?name=${name}&room=${room}`}>
                         <button className='signInBtn' type='submit'>Enter room</button>
@@ -45,7 +58,7 @@ useEffect(() => {
                 </form>
                 <button className='createNewRoom' onClick={createNewRoom}>Create new room</button>
             </div>
-            {createRoomModal && <NewRoomModal room={room} setRoom={setRoom} name={name} setName={setName} setCreateRoomModal={setCreateRoomModal} createRoomModal={createRoomModal} createNewRoom={createNewRoom}/> }
+            {createRoomModal && <NewRoomModal room={room} setRoom={setRoom} name={name} setName={setName} setCreateRoomModal={setCreateRoomModal} createRoomModal={createRoomModal} /> }
         </div>
     )
 }

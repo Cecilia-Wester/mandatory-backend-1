@@ -25,15 +25,14 @@ export default function Messages ({messages, name}) {
     */
    return(
     <ScrollToBottom className='messages'>
-        {messages.map((msg, index) => { 
+        {messages.map((msg, i) => { 
             
               
-            //var index = index + 1; 
-            let i = 'id'+new Date().getTime().toString();
+             i = msg.id
             console.log(msg)
             return(
                 <div key={i} className='chatMessage'>
-                    <Message message={msg} name={name} />
+                    <Message message={msg} name={name}/>
                 </div>
             )
         })

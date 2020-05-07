@@ -1,12 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    console.log('Server up and running');
+router.get('/chat', (req, res) => {
+    res.send(200)('Server up and running');
 });
-
-router.get('/room', (req, res) => {
-    
-})
 
 module.exports = router;

@@ -13,7 +13,6 @@ export default function Chat ({ location }){
     const [room, setRoom] = useState('');
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
-    //let [oldMessages, setOldMessages] = useState([])
 
     useEffect(() => {
         const { room, name } = queryString.parse(location.search);
@@ -21,27 +20,10 @@ export default function Chat ({ location }){
         setRoom(room)
 
         socket.on('oldMessages', (res) => {
-            // let oldMessages
-            // console.log(res);
-            // res.res.map((oldMessage, i) => {
-            //     setMessages([...messages, oldMessage.messageSent]);
-                
-           // });
-            //setMessages([...messages, res.res.map(oldMessage => oldMessage.messageSent)])
-            // console.log('oldmessages received')
-            // console.log(res)
-            
-            res.res.map((m) =>{
-                setMessages([...messages, {user: m.messageSent.name, text: m.messageSent.text}])
-            });
-            
-           //blurb = res.res.map(getOldMessage)
+            console.log(res)
+            setMessages(messages => [...messages, ...res.res.map(oldMessage => oldMessage.messageSent)])
         })
-    }, [messages]);
-
-    // function getOldMessage(msg){
-
-    // }
+    }, [location.search]);
 
     useEffect(() => {
         const {room, name} = queryString.parse(location.search);
@@ -85,7 +67,7 @@ export default function Chat ({ location }){
             </Helmet>
             <Header />
             <h1>Chat</h1>
-                <div className='chatInnerContainter' >
+                <div className='chatInnerContainer' >
                     <InfoBar room={room} location={location}/>
                     <Messages messages={messages} name={name} />
                     <Input onSubmitMessage={onSubmitMessage} message= {message} setMessage={setMessage} />
