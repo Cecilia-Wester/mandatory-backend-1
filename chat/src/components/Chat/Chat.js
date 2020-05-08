@@ -38,7 +38,7 @@ export default function Chat ({ location }){
             socket.off();
         }
         
-    }, ['localhost:8090', location.search]);//om dessa två parametrar ändras så körs denna useEffect
+    }, [ location.search]);//om dessa två parametrar ändras så körs denna useEffect
 
     function onSubmitMessage(e) {
         e.preventDefault();

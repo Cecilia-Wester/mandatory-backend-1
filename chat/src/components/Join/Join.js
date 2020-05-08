@@ -1,34 +1,50 @@
 import React, { useState, useEffect } from 'react';
 import {Helmet} from 'react-helmet-async';
-import {Router, Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './Join.css';
 import NewRoomModal from './NewRoomModal';
-import socket from '../../utility/socket';
 import axios from 'axios';
 
 export default function Join (){
     const [createRoomModal, setCreateRoomModal] = useState(false);
-const [room, setRoom] = useState('');
+    const [room, setRoom] = useState('');
     const [name, setName] = useState('');
-    const [rooms, setRooms] = useState([{name: 'test1'},{name: 'test2'}, {name: 'test3'}])
+    const [rooms, setRooms] = useState([]);
+    const [id, setId] = useState('')
 
     useEffect(() => {
-        axios.get('http://localhost:8090/rooms')
+        axios.get('/chat')
         .then(( res ) => {
-            setRooms([...rooms, res.room]);
+            setRooms([...rooms, res.data]);
         })
         .catch((err) =>{
             console.log(err)
         })
-    }, [])
+    },[])
+
+    useEffect((_id) => {
+        axios.get('/chat/:id')
+        .then((res)=>{
+            console.log(res);
+            setRoom(res.room)
+            setId(res._id)
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    },[])
+
+    function onClickDelete(e){
+        e.preventDefault();
+        setRoom(room);
+    }
 
     function createNewRoom(){
         setCreateRoomModal(true);
         setRoom('');
     }    
-
+    console.log(rooms)
     return(
-
         <div className='joinOuterContainer' >
             <Helmet>
                 <title>Join</title>
@@ -39,22 +55,25 @@ const [room, setRoom] = useState('');
                         <input type='text' id='username'  className='joinInput' placeholder='Enter username' onChange={(e) => setName(e.target.value)}></input>
                     </label>
                     <br/>
-                    <select name='room' id='room'>
-                        {/*rooms.map((room) => {
-                            <option 
-                                key={room.id}
-
-                                > 
-                                {room}
-                            </option>
-                        })*/}
-                        
-                    </select>
-                    
+                    <div name='room' id='room'>
+                        {rooms.map((room,i) => { 
+                            return( 
+                            room.map((r, index) => {
+                                return(
+                                    <div key={r._id} >
+                                        {r.room}
+                                        <Link onSubmit={e => (!name || !room) ? e.preventDefault() : null} to={`/chat?name=${name}&room=${room}`}>
+                                            {setRoom(r.room)}
+                                            <button className='signInBtn' type='submit'>Enter room</button>
+                                        </Link>
+                                        <button onClick={(e) => onClickDelete(e) }>Delete</button>
+                                    </div>
+                                )
+                            })
+                        )})}    
+                    </div>
                     <br/>
-                    <Link onSubmit={e => (!name || !room) ? e.preventDefault() : null} to={`/chat?name=${name}&room=${room}`}>
-                        <button className='signInBtn' type='submit'>Enter room</button>
-                    </Link>
+                    
                 </form>
                 <button className='createNewRoom' onClick={createNewRoom}>Create new room</button>
             </div>

@@ -8,7 +8,7 @@ const {addUser, removeUser, getUser, getUsersInRoom} = require('./users', );
 
 const PORT = process.env.PORT || 8090;
 
-app.use(express.json);
+app.use(express.json());
 
 app.post('/chat', (req,res) => {
   const db = getDB();
@@ -26,13 +26,13 @@ app.post('/chat', (req,res) => {
     })
 })
 
-app.get('/chat', (req,res) => {
+app.get('/chat', (req, res) => {
   const db = getDB();
   db.collection('Rooms')
     .find({})
     .toArray()
     .then(data => {
-      res.send(data)
+      res.send(data);
     })
     .catch(e =>{
       console.log(e)
@@ -42,11 +42,11 @@ app.get('/chat', (req,res) => {
 
 app.get('/chat/:id', (req,res) =>{
   let roomId = req.params.id;
-
   const db=getDB();
   db.collection('Rooms')
     .findOne({_id: createObjectId(roomId)})
     .then(room => {
+      console.log(room)
       res.send(room);
     })
     .catch(e => {
