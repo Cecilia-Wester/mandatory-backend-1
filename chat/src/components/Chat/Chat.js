@@ -20,7 +20,6 @@ export default function Chat ({ location }){
         setRoom(room)
 
         socket.on('oldMessages', (res) => {
-            console.log(res)
             setMessages(messages => [...messages, ...res.res.map(oldMessage => oldMessage.messageSent)])
         })
     }, [location.search]);
@@ -29,16 +28,13 @@ export default function Chat ({ location }){
         const {room, name} = queryString.parse(location.search);
         setName(name);
         setRoom(room);
-        
         socket.emit('join', { room, name }, () => {
         });
-
         return() => {
             socket.emit('disconnect');
             socket.off();
         }
-        
-    }, [ location.search]);//om dessa två parametrar ändras så körs denna useEffect
+    }, [location.search]);
 
     function onSubmitMessage(e) {
         e.preventDefault();
@@ -49,16 +45,9 @@ export default function Chat ({ location }){
 
     useEffect(() => {
         socket.on('message', (message) => {
-            console.log('got a message')
-            console.log(message);
-            console.log(messages);
-            setMessages([...messages, message]);
-            console.log(message);
-            console.log(messages);       
-         });
+            setMessages([...messages, message]);      
+        });
     }, [messages]);
-
-    //console.log(message, messages);
     
     return(
         <div className='chatOuterContainer'>
@@ -67,11 +56,11 @@ export default function Chat ({ location }){
             </Helmet>
             <Header />
             <h1>Chat</h1>
-                <div className='chatInnerContainer' >
-                    <InfoBar room={room} location={location}/>
-                    <Messages messages={messages} name={name} />
-                    <Input onSubmitMessage={onSubmitMessage} message= {message} setMessage={setMessage} />
-                </div>
+            <div className='chatInnerContainer' >
+                <InfoBar room={room} location={location}/>
+                <Messages messages={messages} name={name} />
+                <Input onSubmitMessage={onSubmitMessage} message= {message} setMessage={setMessage} />
+            </div>
         </div>
     )
 }

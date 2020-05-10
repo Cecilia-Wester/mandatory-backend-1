@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
@@ -8,8 +8,6 @@ export default function NewRoomModal ({ room, setRoom, name, setName, setCreateR
 
     function handleCreateRoom(e){
         e.preventDefault()
-        //postRoom(room);
-        console.log('when do I happen')
         axios.post('/chat', {
             room: room
         })
@@ -22,22 +20,6 @@ export default function NewRoomModal ({ room, setRoom, name, setName, setCreateR
             console.log(err);
         });
     }
-    
-
-    //function postRoom(room){
-    //     console.log('when do I happen')
-    //     axios.post('/rooms', {
-    //         room: room
-    //     })
-    //     .then((response) => {
-    //         console.log(response);
-    //         setRoom(room);
-    //         setRedirectTo(true)
-    //     })
-    //     .catch(err => {
-    //         console.log(err);
-    //     });
-    // }
 
     return ReactDOM.createPortal((
         <div className='createNewRoomModal'>
@@ -45,7 +27,7 @@ export default function NewRoomModal ({ room, setRoom, name, setName, setCreateR
                 <br/>
             <form onSubmit={(e) =>  handleCreateRoom(e)}>
                 <label htmlFor='modalUsername' className='inputfieldlabel'> Username: 
-                    <input type='text' id='Modalusername'  className='joinInput' placeholder='Enter username' onChange={(e) => setName(e.target.value)}></input>
+                    <input required minLength='1' type='text' id='Modalusername'  className='joinInput' placeholder='Enter username' onChange={(e) => setName(e.target.value)}></input>
                 </label>
                 <br/>
                 <label htmlFor='ModalRoom' className='inputfieldlabel'> Chatroom:
