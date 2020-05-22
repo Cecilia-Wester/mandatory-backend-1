@@ -3,7 +3,6 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server, {origins: '*:*' });
 const {getClient, getDB, createObjectId} = require('./db');
-
 const {addUser, removeUser, getUser, getUsersInRoom} = require('./users', );
 
 const PORT = process.env.PORT || 8090;
@@ -13,8 +12,7 @@ app.use(express.json());
 app.post('/chat', (req, res) => {
   const db = getDB();
   let data = req.body;
-  console.log(data)
-  console.log(data)
+  console.log(data);
   db.collection('Rooms').find({room: data.room}).toArray()
     .then(result => {
       if(result.length === 0){
@@ -58,6 +56,16 @@ app.delete('/chat/:id', (req,res) =>{
     .remove({_id: createObjectId(roomId)})
     .then(room => {
       console.log('room deleted')
+      res.status(200).send();
+    })
+    .catch(e => {
+      console.log(e)
+      res.status(500).end();
+    });
+    db.collection('chatting')
+    .remove({_id: createObjectId(roomId)})
+    .then(room => {
+      console.log('chat deleted')
       res.status(200).send();
     })
     .catch(e => {

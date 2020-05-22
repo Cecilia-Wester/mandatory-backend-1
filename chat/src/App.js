@@ -10,7 +10,7 @@ export default function App() {
         <div className="App">
             <HelmetProvider>
                 <Router>
-                    <Route path= '/' exact component={Join} />
+                    <Route exact path= '/' component={Join} />
                     <Route path= '/chat' component={Chat} />
                 </Router>
             </HelmetProvider>
